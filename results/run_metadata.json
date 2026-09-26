@@ -1,0 +1,27 @@
+{
+  "generated_at_utc": "2026-09-26T16:38:09.093378+00:00",
+  "dataset_type": "synthetic",
+  "customers": 40,
+  "seed": 2027,
+  "dataset_sha256": "3a5c8fd988b7213e36d9153903b60d9b94b698a45bd218fa10be7107748932ed",
+  "coordinate_model": "20 x 20 km square, depot at (10,10); custom input may differ",
+  "distance_model": "Euclidean km, rounded per edge to integer meters",
+  "capacity_units": 100,
+  "vehicles_available": 6,
+  "fleet_rule": "baseline route count",
+  "demand_based_vehicle_lower_bound": 6,
+  "search_seconds": 10,
+  "initial_solution": "capacity-aware nearest-neighbor baseline",
+  "search_method": "GUIDED_LOCAL_SEARCH",
+  "solver_status_code": 1,
+  "distance_reduction_pct": 23.038512803942172,
+  "global_optimality_proven": false,
+  "python": "3.12.14",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "packages": {
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "matplotlib": "3.10.3",
+    "ortools": "9.14.6206"
+  }
+}

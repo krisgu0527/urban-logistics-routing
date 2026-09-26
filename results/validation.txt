@@ -1,0 +1,59 @@
+Acceptance output; local paths normalized for publication.
+
+python -m pip check
+No broken requirements found.
+
+
+python -m unittest discover -s tests -v
+test_capacity_and_customer_coverage_at_requested_sizes (test_project.RoutingChecks.test_capacity_and_customer_coverage_at_requested_sizes) ... ok
+test_distance_units_and_return_to_depot (test_project.RoutingChecks.test_distance_units_and_return_to_depot) ... ok
+test_generation_and_invalid_inputs (test_project.RoutingChecks.test_generation_and_invalid_inputs) ... ok
+test_route_rejections (test_project.RoutingChecks.test_route_rejections) ... ok
+test_tiny_solution_against_enumeration (test_project.RoutingChecks.test_tiny_solution_against_enumeration) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 4.023s
+
+OK
+
+
+python main.py
+  method  customers_served  vehicles_available  vehicles_used  total_distance_km  average_route_km  longest_route_km  total_demand_units  capacity_utilization_pct  routing_runtime_seconds
+Baseline                40                   6              6            198.064            33.011            46.295                 504                    84.000                    0.000
+OR-Tools                40                   6              6            152.433            25.405            32.392                 504                    84.000                   10.005
+Distance reduction: 23.04% | output: <project>\results
+
+
+python <validation-workspace>\verify_exports.py
+PASS: CSV/JSON routes, demands, capacities, coverage, rounded Euclidean distances, summaries, metadata hash and document results agree.
+
+
+python main.py --input <validation-workspace>\precision-input.csv --vehicles 8 --seconds 1 --output <validation-workspace>\custom-smoke
+  method  customers_served  vehicles_available  vehicles_used  total_distance_km  average_route_km  longest_route_km  total_demand_units  capacity_utilization_pct  routing_runtime_seconds
+Baseline                40                   8              6            198.064            33.011            46.295                 504                    84.000                    0.000
+OR-Tools                40                   8              6            152.433            25.405            32.392                 504                    84.000                    1.007
+Distance reduction: 23.04% | output: <validation-workspace>\custom-smoke
+
+
+python main.py --capacity 1
+usage: main.py [-h] [--customers CUSTOMERS] [--seed SEED]
+               [--capacity CAPACITY] [--vehicles VEHICLES] [--seconds SECONDS]
+               [--input INPUT] [--output OUTPUT]
+main.py: error: A customer's demand exceeds vehicle capacity; split delivery is disabled
+
+
+python main.py --vehicles 1
+usage: main.py [-h] [--customers CUSTOMERS] [--seed SEED]
+               [--capacity CAPACITY] [--vehicles VEHICLES] [--seconds SECONDS]
+               [--input INPUT] [--output OUTPUT]
+main.py: error: Baseline needs 6 vehicles, exceeding fleet 1. This does not prove the CVRP is infeasible; this comparison requires a feasible baseline.
+
+
+python main.py --seconds 0
+usage: main.py [-h] [--customers CUSTOMERS] [--seed SEED]
+               [--capacity CAPACITY] [--vehicles VEHICLES] [--seconds SECONDS]
+               [--input INPUT] [--output OUTPUT]
+main.py: error: seed must be nonnegative, seconds positive, vehicles in 1..200
+
+
+PASS: custom CSV/explicit fleet/separate output work; coordinate precision and default artifacts preserved; invalid CLI inputs rejected.
